@@ -1,0 +1,60 @@
+<div class="top-controls flex">
+  <%= link "x", to: Routes.place_index_path(@socket, :index), class: "exit-button" %>
+
+  <div class="coordinates">
+    <span>(<%= @selected_pixel.x %>, <%= @selected_pixel.y %>) &nbsp;</span>
+    <span id="zoom" phx-update="ignore">1.0x</span>
+  </div>
+
+  <div></div>
+</div>
+
+<%# Everything in container should be controlled by the place hook so make sure it's phx-update=ignored #%>
+<div class="place-container" id="place" phx-hook="Place" phx-update="ignore">
+  <div class="place-control" id="place-control">
+    <div>
+      <canvas
+        id="place-canvas"
+        class="place canvas"
+        width={@place.size}
+        height={@place.size}
+        style={"left: calc(50% - #{round(@place.size / 2)}px);top: calc(50% - #{round(@place.size / 2)}px);z-index: 2"}
+      >
+      </canvas>
+
+      <canvas
+        id="overlay-canvas"
+        class="canvas"
+        width={@place.size}
+        height={@place.size}
+        style={"left: calc(50% - #{round(@place.size / 2)}px);top: calc(50% - #{round(@place.size / 2)}px);z-index: 3"}
+      >
+      </canvas>
+    </div>
+  </div>
+</div>
+
+<%= if @show_overlay do %>
+  <div class="bottom-controls">
+    <div class="flex">
+      <%= for {color, hex} <- Places.colors() do %>
+        <button
+          phx-click="select_color"
+          phx-value-color={color}
+          class={"button button-outline #{active_color(@selected_pixel, hex)}"}
+          style={color_style(hex)}></button>
+      <% end %>
+    </div>
+
+    <div>
+      <button phx-click="cancel_placement">Cancel</button>
+      <button phx-click="confirm_placement">Place</button>
+    </div>
+  </div>
+<% else %>
+  <div class="bottom-controls flex">
+    <button>Share</button>
+    <button phx-click="select_pixel">Place a tile</button>
+    <button>Search</button>
+  </div>
+<% end %>

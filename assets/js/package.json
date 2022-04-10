@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@panzoom/panzoom": "^4.4.4"
+  }
+}

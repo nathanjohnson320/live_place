@@ -1,0 +1,40 @@
+<h1>Listing Places</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.place_index_path(@socket, :index)}>
+    <.live_component
+      module={LivePlaceWeb.PlaceLive.FormComponent}
+      id={@place.id || :new}
+      title={@page_title}
+      action={@live_action}
+      place={@place}
+      current_user={@current_user}
+      return_to={Routes.place_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Active</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="places">
+    <%= for place <- @places do %>
+      <tr id={"place-#{place.id}"}>
+        <td><%= place.name %></td>
+        <td><%= place.active %></td>
+        <td>
+          <span><%= live_redirect "Show", to: Routes.place_show_path(@socket, :show, place) %></span>
+          <span><%= live_patch "Edit", to: Routes.place_index_path(@socket, :edit, place) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: place.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Place", to: Routes.place_index_path(@socket, :new) %></span>
