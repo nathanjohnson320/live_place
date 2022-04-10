@@ -1,4 +1,10 @@
-# Place
+# LivePlace
+
+# What is this
+
+An attempt to remake reddit's r/place in phoenix live view
+
+# Running locally
 
 To start your Phoenix server:
 
@@ -8,7 +14,9 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+# Deploying
+
+There's fly.io things setup you should be able to `fly launch` and it work out of the box. It uses a good bit of RAM and currently making users is manual so not recommended.
 
 ## Learn more
 
