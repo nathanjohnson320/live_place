@@ -23,7 +23,6 @@ defmodule LivePlaceWeb.Router do
     live "/places/new", PlaceLive.Index, :new
     live "/places/:id/show/edit", PlaceLive.Show, :edit
     live "/places/:id/edit", PlaceLive.Index, :edit
-    live "/places", PlaceLive.Index, :index
   end
 
   scope "/", LivePlaceWeb do
@@ -31,12 +30,12 @@ defmodule LivePlaceWeb.Router do
 
     get "/", PageController, :index
     live "/places/:id", PlaceLive.Show, :show
+    live "/places", PlaceLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
   scope "/api", LivePlaceWeb do
-    # pipe_through [:browser, :require_authenticated_user]
-    pipe_through [:browser]
+    pipe_through [:browser, :require_authenticated_user]
 
     get "/places/:id/pixels", Controllers.PlaceController, :show
   end

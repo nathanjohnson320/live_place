@@ -3,7 +3,7 @@ defmodule LivePlaceWeb.PlaceLive.Show do
 
   alias LivePlace.Places
 
-  # on_mount LivePlaceWeb.LiveAuth
+  on_mount LivePlaceWeb.LiveAuth
 
   @colors Places.colors()
   @initial_pixel %{x: 0, y: 0, color: @colors.white}
