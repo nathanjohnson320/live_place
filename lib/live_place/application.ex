@@ -47,5 +47,5 @@ defmodule LivePlace.Application do
     :ok
   end
 
-  def env(), do: System.get_env("MIX_ENV")
+  def env(), do: System.get_env("MIX_ENV", "test")
 end

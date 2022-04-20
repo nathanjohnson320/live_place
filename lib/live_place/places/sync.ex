@@ -8,6 +8,27 @@ defmodule LivePlace.Places.Sync do
   alias LivePlace.Places
   alias LivePlace.Places.Server
 
+  @interval :timer.seconds(10)
+
+  def shutdown(place_id) do
+    case lookup_server(place_id) do
+      {:ok, pid} -> GenServer.call(pid, :shutdown)
+      error -> error
+    end
+  end
+
+  defp lookup_server(place_id) do
+    case Registry.lookup(SyncRegistry, place_id) do
+      [{pid, _}] -> {:ok, pid}
+      _ -> {:error, :not_found}
+    end
+  end
+
+  @impl true
+  def handle_call(:shutdown, _from, _state) do
+    {:stop, :normal, {:ok, nil}, nil}
+  end
+
   @impl true
   def handle_info(:tick, %{place: place, grid: grid} = state) do
     pixels = Places.get_cached_place!(place.id)
@@ -38,7 +59,7 @@ defmodule LivePlace.Places.Sync do
       ]
       |> Task.await_many()
 
-    Process.send_after(self(), :tick, :timer.seconds(1))
+    Process.send_after(self(), :tick, @interval)
     {:noreply, %{state | grid: updated_grid}}
   end
 
@@ -65,7 +86,7 @@ defmodule LivePlace.Places.Sync do
     {:ok, _} = Cachex.put(:places_view_cache, place.id, Places.place_to_uint8array(place))
 
     # Start the process loop to update
-    Process.send_after(self(), :tick, :timer.seconds(1))
+    Process.send_after(self(), :tick, @interval)
     {:ok, %{place: Map.delete(place, :grid), grid: place.grid}}
   end
 

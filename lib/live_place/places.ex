@@ -81,8 +81,9 @@ defmodule LivePlace.Places do
 
   def get_active_place!() do
     query =
-      from place in Place,
+      from(place in Place,
         where: place.active
+      )
 
     Repo.one!(query)
   end
@@ -175,6 +176,9 @@ defmodule LivePlace.Places do
   def delete_place(%Place{} = place) do
     Multi.new()
     |> Multi.delete(:place, place)
+    |> Multi.run(:terminate_sync, fn _repo, %{place: place} ->
+      LivePlace.Places.Sync.shutdown(place.id)
+    end)
     |> Multi.run(:terminate_server, fn _repo, %{place: place} ->
       LivePlace.Places.Server.shutdown(place.id)
     end)

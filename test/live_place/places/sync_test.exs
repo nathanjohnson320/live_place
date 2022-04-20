@@ -22,7 +22,7 @@ defmodule LivePlace.Places.SyncTest do
     end
 
     test "tick should update caches, save to DB, and broadcast" do
-      %{id: place_id} = place = place_fixture() |> Repo.preload(:grid)
+      %{id: place_id} = place = place_fixture(%{size: 20}) |> Repo.preload(:grid)
 
       Phoenix.PubSub.subscribe(LivePlace.PubSub, place.id)
 
@@ -55,7 +55,12 @@ defmodule LivePlace.Places.SyncTest do
                         ]
                       }}
 
-      assert Places.get_cached_place_view!(place_id) == updated_view
+      assert [
+               [255, 69, 0, 255],
+               [255, 255, 255, 255],
+               [255, 255, 255, 255],
+               [0, 0, 0, 255] | _rest
+             ] = Places.get_cached_place_view!(place_id)
 
       assert %{grid: %{pixels: ^updated_pixels}} =
                Repo.get!(LivePlace.Places.Place, place_id) |> Repo.preload(:grid)
@@ -65,7 +70,12 @@ defmodule LivePlace.Places.SyncTest do
 
       refute_receive {"update_pixels", _}
 
-      assert Places.get_cached_place_view!(place_id) == updated_view
+      assert [
+               [255, 69, 0, 255],
+               [255, 255, 255, 255],
+               [255, 255, 255, 255],
+               [0, 0, 0, 255] | _rest
+             ] = Places.get_cached_place_view!(place_id)
 
       assert %{grid: %{pixels: ^updated_pixels}} =
                Repo.get!(LivePlace.Places.Place, place_id) |> Repo.preload(:grid)
