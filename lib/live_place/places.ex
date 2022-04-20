@@ -137,7 +137,7 @@ defmodule LivePlace.Places do
   def place_to_uint8array(place) do
     for x <- Range.new(0, place.size - 1),
         y <- Range.new(0, place.size - 1) do
-      color_to_rgb(place.grid.pixels[{x, y}])
+      color_to_rgb(place.grid.pixels[{y, x}])
     end
   end
 

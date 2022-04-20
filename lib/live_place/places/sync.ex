@@ -40,7 +40,6 @@ defmodule LivePlace.Places.Sync do
           # We could also do the transformation in the server to rgb before the buffer insert idk
           place.id
           |> Server.get_and_clear_buffer()
-          |> elem(1)
           |> process_queue()
           |> broadcast_buffer(place)
         end),
@@ -83,10 +82,11 @@ defmodule LivePlace.Places.Sync do
   def init(place) do
     # Cache the initial data
     {:ok, _} = Cachex.put(:places_cache, place.id, place.grid.pixels)
+
     {:ok, _} = Cachex.put(:places_view_cache, place.id, Places.place_to_uint8array(place))
 
     # Start the process loop to update
-    Process.send_after(self(), :tick, @interval)
+    Process.send_after(self(), :tick, :timer.seconds(1))
     {:ok, %{place: Map.delete(place, :grid), grid: place.grid}}
   end
 

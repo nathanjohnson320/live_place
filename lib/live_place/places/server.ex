@@ -60,7 +60,7 @@ defmodule LivePlace.Places.Server do
   @impl true
   def handle_call({:get, :buffer}, _from, state) do
     # returns the buffer, used by the sync
-    {:reply, {:ok, state.buffer}, %{state | buffer: :queue.new()}}
+    {:reply, state.buffer, %{state | buffer: :queue.new()}}
   end
 
   @impl true
