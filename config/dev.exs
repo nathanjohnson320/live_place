@@ -2,12 +2,9 @@ import Config
 
 # Configure your database
 config :live_place, LivePlace.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "place_dev",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  database: Path.expand("../live_place_dev.db", Path.dirname(__ENV__.file)),
+  pool_size: 5,
+  show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

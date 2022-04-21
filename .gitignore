@@ -33,3 +33,10 @@ npm-debug.log
 node_modules
 
 .elixir_ls
+
+live_place_dev.db
+live_place_dev.db-shm
+live_place_dev.db-wal
+live_place_test.db
+live_place_test.db-shm
+live_place_test.db-wal

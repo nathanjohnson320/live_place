@@ -1,5 +1,5 @@
 defmodule LivePlaceWeb.UserSettingsControllerTest do
-  use LivePlaceWeb.ConnCase, async: true
+  use LivePlaceWeb.ConnCase
 
   alias LivePlace.Accounts
   import LivePlace.AccountsFixtures

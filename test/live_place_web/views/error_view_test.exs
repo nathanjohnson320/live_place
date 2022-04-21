@@ -1,5 +1,5 @@
 defmodule LivePlaceWeb.ErrorViewTest do
-  use LivePlaceWeb.ConnCase, async: true
+  use LivePlaceWeb.ConnCase
 
   # Bring render/3 and render_to_string/3 for testing custom views
   import Phoenix.View

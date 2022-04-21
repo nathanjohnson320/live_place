@@ -1,5 +1,5 @@
 defmodule LivePlaceWeb.UserRegistrationControllerTest do
-  use LivePlaceWeb.ConnCase, async: true
+  use LivePlaceWeb.ConnCase
 
   import LivePlace.AccountsFixtures
 

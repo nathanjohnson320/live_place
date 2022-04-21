@@ -1,3 +1,3 @@
 defmodule LivePlaceWeb.PageViewTest do
-  use LivePlaceWeb.ConnCase, async: true
+  use LivePlaceWeb.ConnCase
 end

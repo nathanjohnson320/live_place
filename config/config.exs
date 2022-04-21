@@ -18,6 +18,8 @@ config :live_place, LivePlaceWeb.Endpoint,
   pubsub_server: LivePlace.PubSub,
   live_view: [signing_salt: "YO7janx7"]
 
+config :ecto_sqlite3, uuid_type: :binary, binary_id_type: :binary
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
