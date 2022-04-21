@@ -29,6 +29,16 @@ export default class Grid {
 
     const container = document.getElementById("place-control");
     this.panzoom = Panzoom(container, { maxScale: 40 });
+
+    // Depending on size we need to auto scale to fit the screen
+    const clientWidth = document.body.clientWidth;
+    // Height needs to subtract the height of the bottom bar (48 px * 2 for padding)
+    const clientHeight = document.body.clientHeight - 96;
+    const smallerDimension = Math.min(clientWidth, clientHeight);
+    const scale = Math.ceil(smallerDimension / size);
+
+    this.panzoom.zoom(scale, { animate: false });
+
     this.canvas.parentElement.addEventListener(
       "wheel",
       this.panzoom.zoomWithWheel
