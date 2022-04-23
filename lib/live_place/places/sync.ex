@@ -30,6 +30,9 @@ defmodule LivePlace.Places.Sync do
   end
 
   @impl true
+  def handle_continue(:tick, state), do: handle_info(:tick, state)
+
+  @impl true
   def handle_info(:tick, %{place: place, grid: grid} = state) do
     pixels = Places.get_cached_place!(place.id)
 
@@ -62,6 +65,8 @@ defmodule LivePlace.Places.Sync do
     {:noreply, %{state | grid: updated_grid}}
   end
 
+  def process_queue({:error, :not_found}), do: []
+
   def process_queue(queue, new_buffer \\ []) do
     case :queue.out(queue) do
       {{:value, {{x, y}, color}}, queue} ->
@@ -85,9 +90,7 @@ defmodule LivePlace.Places.Sync do
 
     {:ok, _} = Cachex.put(:places_view_cache, place.id, Places.place_to_uint8array(place))
 
-    # Start the process loop to update
-    Process.send_after(self(), :tick, :timer.seconds(1))
-    {:ok, %{place: Map.delete(place, :grid), grid: place.grid}}
+    {:ok, %{place: Map.delete(place, :grid), grid: place.grid}, {:continue, :tick}}
   end
 
   def start_link(place) do
